@@ -1,0 +1,25 @@
+{{ define "edit" }}
+{{ template "header" }}
+<section id="showcase">
+<div class="container">
+<h1> Edditing a record {{ .Name }} in a table: {{.TableName}} </h1>
+<div class = "form-group">
+  <form role="form" method="POST" action="/saveRecord">
+{{ range .MyData }}
+  <label for="{{.Header}}" style=" font-weight: bold; display: block; width: 150px;
+float: left;">{{.Header}}:</label>
+  <input type="text" name="{{.Header}}" value="{{.Value}}" />
+  <br>
+{{end}}
+<input type="text" name="recordName" value="{{.Name}}" style="display: none"/>
+<input type="text" name="tableName" value="{{.TableName}}" style="display: none"/>
+<button type="submit">Submit</button>
+  </form>
+</div>
+
+
+
+
+</div>
+</section>
+{{end}}

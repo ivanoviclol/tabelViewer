@@ -1,0 +1,108 @@
+{{define "index"}}
+{{ template "header" }}
+<section id="showcase">
+   <div class="container">
+      <h1> {{ .TableName }} </h1>
+      <table>
+        <tr>
+          {{range .Header}}
+          <th>
+            <span style="display: inline;">
+          <form action="/deleteColumn" method="post"  style="display: inline;">
+            <input type="text" name="columnName" value="{{.}}" style="display: none"/>
+          <button id="deleteColumn" type="submit" >X</button>
+          </form>
+               <form action="/shuffleUp" method="post" name={{.}} style="display: inline;">
+                 <input type="text" name="columnName" value="{{.}}" style="display: none"/>
+          <button id="shuffleUp" type="submit" >↑</button>
+          </form>
+               <form action="/shuffleDown" method="post" name={{.}} style="display: inline;">
+                 <input type="text" name="columnName" value="{{.}}" style="display: none"/>
+          <button id="shuffleDown"  type="submit" >↓</button>
+          </form>
+        </span>
+        </th>
+          {{end}}
+        </tr>
+         <tr>
+            {{  range .Header }}
+            <th>
+              {{ . }}
+            </th>
+            {{end}}     
+            <form action="/addingANewColumn" method="post">
+               <th><button id="myBtn">New Column</button></th>               
+            </form>
+         </tr>
+         {{range .Value}}
+         <tr>
+            {{range $nummer, $value := .}}
+            <td>
+               {{if $nummer}}
+               {{$value}}
+               {{ else}}
+               {{ if $.Soort}}
+               <a href={{$value}}>{{$value}}</a>
+               <form action="/deleteRecord" method="post" name={{$value}} style="display: inline; float: right">
+                  <input type="text" name="name" value="{{.}}" style="display: none"/>
+                  <button id="myBtn">X</button>
+                     </form>
+                  <form action="/editRecord" method="post" name={{$value}} style="display: inline; float: right;">
+                    <input type="text" name="name" value="{{.}}" style="display: none"/>
+                     <button id="myBtn">Edit</button>
+                   </form>
+               {{else}}
+               {{$value}}
+               <form action="/deleteRecord" method="post" name={{$value}} style="display: inline; float: right">
+                 <input type="text" name="name" value="{{.}}" style="display: none"/>
+                  <button id="myBtn">X</button>
+                     </form>
+                  <form action="/editRecord" method="post" name={{$value}} style="display: inline; float: right">
+                    <input type="text" name="name" value="{{.}}" style="display: none"/>
+                     <button id="myBtn">Edit</button>
+                   </form>
+               {{end}}
+               {{end}}
+            </td>
+            {{end}}
+         </tr>
+         {{end}}
+         <tr id="addingRecord" style="display:none;" >
+            <form role="form" method="POST" action="/NewRecord">
+               {{  range .Header }}
+               <td>
+                  <div class="form-group">
+                     <input type="text" class="form-control" id={{.}} name={{.}} />
+                  </div>
+               </td>
+               {{end}}
+               <td>
+                  <button type="submit" class="AddingRecords">Submit</button>
+               </td>
+         </tr>
+         </form>
+         <tr>
+            <td>
+               {{ if $.Soort}}
+               <button type="button" onclick="activate()">New Table</button>
+               <form role="form" method="POST" action="/useTemplate">
+                 <input type="text" name="tableName" value="{{.TableName}}" style="display: none"/>
+                 <button type="submit" >Use template </button>
+               </form>
+               {{else}}
+               <button type="button" onclick="activate()">New Record</button>
+               {{end}}
+            </td>
+         </tr>
+      </table>
+      <script>
+         function activate() {
+                 document.getElementById('addingRecord').style.display = "table-row";
+                 //  alert(document.getElementById("addingRecord").style.visibility);
+         }
+      </script>
+   </div>
+</section>
+</body>
+</html>
+{{end}}
